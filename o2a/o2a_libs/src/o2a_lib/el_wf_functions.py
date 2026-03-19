@@ -19,7 +19,7 @@ from typing import Optional, Set
 from jinja2 import pass_context
 
 from airflow.models import TaskInstance, DagRun, DAG
-from airflow.utils.db import provide_session
+from airflow.utils.session import provide_session
 from airflow import AirflowException
 
 
@@ -93,7 +93,7 @@ def last_error_node(context=None, session=None) -> str:
         session.query(TaskInstance)
         .filter(ti.dag_id == dag_id)
         .filter(ti.task_id.endswith("_error"))
-        .order_by(ti.execution_date.asc())
+        .order_by(ti.start_date.asc())
         .first()
     )
 

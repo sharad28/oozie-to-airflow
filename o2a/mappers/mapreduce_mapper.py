@@ -82,6 +82,5 @@ class MapReduceMapper(ActionMapper):
 
     def required_imports(self) -> Set[str]:
         return {
-            "from airflow.utils import dates",
             "from airflow.providers.google.cloud.operators.dataproc import DataprocSubmitJobOperator"
         }

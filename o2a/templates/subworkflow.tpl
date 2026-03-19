@@ -21,16 +21,12 @@ CONFIG={{ config | to_python }}
 
 JOB_PROPS={{ job_properties | to_python }}
 
-def sub_dag(parent_dag_name, child_dag_name, start_date, schedule_interval, user_defined_macros):
-    with models.DAG(
-        '{0}.{1}'.format(parent_dag_name, child_dag_name),
-        schedule_interval=schedule_interval,  # Change to suit your needs
-        start_date=start_date,  # Change to suit your needs
-        user_defined_macros=user_defined_macros  # Change to suit your needs
-    ) as dag:
+def create_task_group(dag, group_id, user_defined_macros):
+    from airflow.utils.task_group import TaskGroup
+    with TaskGroup(group_id=group_id, dag=dag) as task_group:
 
     {% filter indent(8, True) %}
     {% include "dag_body.tpl" %}
     {% endfilter %}
 
-    return dag
+    return task_group
